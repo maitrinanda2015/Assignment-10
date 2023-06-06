@@ -1,0 +1,417 @@
+<aside>
+💡 **1**
+
+Given an integer `n`, return *`true` if it is a power of three. Otherwise, return `false`*.
+
+An integer `n` is a power of three, if there exists an integer `x` such that `n == 3x`.
+
+**Example 1:**
+
+```
+Input: n = 27
+Output: true
+Explanation: 27 = 33
+```
+
+**Example 2:**
+
+```
+Input: n = 0
+Output: false
+Explanation: There is no x where 3x = 0.
+
+```
+
+**Example 3:**
+Input: n = -1
+Output: false
+Explanation: There is no x where 3x = (-1).
+
+ans-:
+public class PowerOfThree {
+    public static boolean isPowerOfThree(int n) {
+        if (n <= 0) {
+            return false;
+        }
+
+        while (n > 1) {
+            if (n % 3 != 0) {
+                return false;
+            }
+            n /= 3;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        int n1 = 27;
+        int n2 = 0;
+        int n3 = -1;
+
+        System.out.println(isPowerOfThree(n1)); // Output: true
+        System.out.println(isPowerOfThree(n2)); // Output: false
+        System.out.println(isPowerOfThree(n3)); // Output: false
+    }
+}
+<aside>
+💡 **2**
+
+You have a list `arr` of all integers in the range `[1, n]` sorted in a strictly increasing order. Apply the following algorithm on `arr`:
+
+- Starting from left to right, remove the first number and every other number afterward until you reach the end of the list.
+- Repeat the previous step again, but this time from right to left, remove the rightmost number and every other number from the remaining numbers.
+- Keep repeating the steps again, alternating left to right and right to left, until a single number remains.
+
+Given the integer `n`, return *the last number that remains in* `arr`.
+
+**Example 1:**
+
+```
+Input: n = 9
+Output: 6
+Explanation:
+arr = [1, 2,3, 4,5, 6,7, 8,9]
+arr = [2,4, 6,8]
+arr = [2, 6]
+arr = [6]
+
+```
+
+**Example 2:**
+Input: n = 1
+Output: 1
+
+ans-:
+public class LastRemainingNumber {
+
+    public int lastRemaining(int n) {
+        boolean leftToRight = true;
+        int remaining = n;
+        int step = 1;
+        int head = 1;
+
+        while (remaining > 1) {
+            if (leftToRight || remaining % 2 == 1) {
+                head += step;
+            }
+
+            step *= 2;
+            remaining /= 2;
+            leftToRight = !leftToRight;
+        }
+
+        return head;
+    }
+
+    public static void main(String[] args) {
+        LastRemainingNumber solution = new LastRemainingNumber();
+        System.out.println(solution.lastRemaining(9));  // Output: 6
+        System.out.println(solution.lastRemaining(1));  // Output: 1
+    }
+}
+<aside>
+💡  **3**
+
+****Given a set represented as a string, write a recursive code to print all subsets of it. The subsets can be printed in any order.
+
+**Example 1:**
+
+Input :  set = “abc”
+
+Output : { “”, “a”, “b”, “c”, “ab”, “ac”, “bc”, “abc”}
+
+**Example 2:**
+
+Input : set = “abcd”
+
+Output : { “”, “a” ,”ab” ,”abc” ,”abcd”, “abd” ,”ac” ,”acd”, “ad” ,”b”, “bc” ,”bcd” ,”bd” ,”c” ,”cd” ,”d” }
+
+ans-:
+import java.util.ArrayList;
+import java.util.List;
+
+public class SubsetPrinter {
+
+    public List<String> subsets(String set) {
+        List<String> result = new ArrayList<>();
+        generateSubsets(set, 0, "", result);
+        return result;
+    }
+
+    private void generateSubsets(String set, int index, String current, List<String> result) {
+        if (index == set.length()) {
+            result.add(current);
+            return;
+        }
+
+        // Include the current character
+        generateSubsets(set, index + 1, current + set.charAt(index), result);
+
+        // Exclude the current character
+        generateSubsets(set, index + 1, current, result);
+    }
+
+    public static void main(String[] args) {
+        SubsetPrinter subsetPrinter = new SubsetPrinter();
+        List<String> subsets = subsetPrinter.subsets("abc");
+        System.out.println(subsets);
+
+        subsets = subsetPrinter.subsets("abcd");
+        System.out.println(subsets);
+    }
+}
+<aside>
+💡  **4**
+
+Given a string calculate length of the string using recursion.
+
+**Examples:**
+
+Input : str = "abcd"
+Output :4
+
+Input : str = "GEEKSFORGEEKS"
+Output :13
+
+ans-:
+public class StringLengthCalculator {
+
+    public int calculateLength(String str) {
+        if (str.isEmpty()) {
+            return 0;
+        } else {
+            return 1 + calculateLength(str.substring(1));
+        }
+    }
+
+    public static void main(String[] args) {
+        StringLengthCalculator calculator = new StringLengthCalculator();
+        String str = "abcd";
+        int length = calculator.calculateLength(str);
+        System.out.println("Length of '" + str + "' is: " + length);
+
+        str = "GEEKSFORGEEKS";
+        length = calculator.calculateLength(str);
+        System.out.println("Length of '" + str + "' is: " + length);
+    }
+}
+<aside>
+💡  **5**
+
+We are given a string S, we need to find count of all contiguous substrings starting and ending with same character.
+
+**Examples :**
+Input  : S = "abcab"
+Output : 7
+There are 15 substrings of "abcab"
+a, ab, abc, abca, abcab, b, bc, bca
+bcab, c, ca, cab, a, ab, b
+Out of the above substrings, there
+are 7 substrings : a, abca, b, bcab,
+c, a and b.
+
+Input  : S = "aba"
+Output : 4
+The substrings are a, b, a and aba
+
+ans-:
+public class ContiguousSubstringCounter {
+
+    public int countContiguousSubstrings(String str) {
+        int count = 0;
+        int n = str.length();
+
+        // Iterate through each character as the starting point of a substring
+        for (int i = 0; i < n; i++) {
+            char startChar = str.charAt(i);
+
+            // Count substrings ending at the current character
+            for (int j = i; j < n; j++) {
+                char endChar = str.charAt(j);
+                if (startChar == endChar) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+        ContiguousSubstringCounter counter = new ContiguousSubstringCounter();
+        String str = "abcab";
+        int count = counter.countContiguousSubstrings(str);
+        System.out.println("Count of contiguous substrings in '" + str + "' is: " + count);
+
+        str = "aba";
+        count = counter.countContiguousSubstrings(str);
+        System.out.println("Count of contiguous substrings in '" + str + "' is: " + count);
+    }
+}
+<aside>
+💡 **6**
+
+The [tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) is a famous puzzle where we have three rods and **N** disks. The objective of the puzzle is to move the entire stack to another rod. You are given the number of discs **N**. Initially, these discs are in the rod 1. You need to print all the steps of discs movement so that all the discs reach the 3rd rod. Also, you need to find the total moves.**Note:** The discs are arranged such that the **top disc is numbered 1** and the **bottom-most disc is numbered N**. Also, all the discs have **different sizes** and a bigger disc **cannot** be put on the top of a smaller disc. Refer the provided link to get a better clarity about the puzzle.
+
+**Example 1:**
+
+Input:
+N = 2
+Output:
+move disk 1 from rod 1 to rod 2
+move disk 2 from rod 1 to rod 3
+move disk 1 from rod 2 to rod 3
+3
+Explanation:For N=2 , steps will be
+as follows in the example and total
+3 steps will be taken.
+
+Input:
+N = 3
+Output:
+move disk 1 from rod 1 to rod 3
+move disk 2 from rod 1 to rod 2
+move disk 1 from rod 3 to rod 2
+move disk 3 from rod 1 to rod 3
+move disk 1 from rod 2 to rod 1
+move disk 2 from rod 2 to rod 3
+move disk 1 from rod 1 to rod 3
+7
+Explanation:For N=3 , steps will be
+as follows in the example and total
+7 steps will be taken.
+
+ans-:
+public class TowerOfHanoi {
+    public void solveTowerOfHanoi(int n, String sourceRod, String destinationRod, String auxiliaryRod) {
+        if (n == 1) {
+            System.out.println("Move disk 1 from rod " + sourceRod + " to rod " + destinationRod);
+            return;
+        }
+
+        solveTowerOfHanoi(n - 1, sourceRod, auxiliaryRod, destinationRod);
+        System.out.println("Move disk " + n + " from rod " + sourceRod + " to rod " + destinationRod);
+        solveTowerOfHanoi(n - 1, auxiliaryRod, destinationRod, sourceRod);
+    }
+
+    public int countMovesTowerOfHanoi(int n) {
+        return (int) Math.pow(2, n) - 1;
+    }
+
+    public static void main(String[] args) {
+        TowerOfHanoi towerOfHanoi = new TowerOfHanoi();
+        int n = 2;
+        towerOfHanoi.solveTowerOfHanoi(n, "1", "3", "2");
+        int moves = towerOfHanoi.countMovesTowerOfHanoi(n);
+        System.out.println("Total moves: " + moves);
+
+        n = 3;
+        towerOfHanoi.solveTowerOfHanoi(n, "1", "3", "2");
+        moves = towerOfHanoi.countMovesTowerOfHanoi(n);
+        System.out.println("Total moves: " + moves);
+    }
+}
+<aside>
+💡 **7**
+
+Given a string **str**, the task is to print all the permutations of **str**. A **permutation** is an arrangement of all or part of a set of objects, with regard to the order of the arrangement. For instance, the words ‘bat’ and ‘tab’ represents two distinct permutation (or arrangements) of a similar three letter word.
+
+**Examples:**
+
+> Input: str = “cd”
+> 
+> 
+> **Output:** cd dc
+> 
+> **Input:** str = “abb”
+> 
+> **Output:** abb abb bab bba bab bba
+> 
+ans-:
+import java.util.*;
+
+public class StringPermutations {
+    public static void main(String[] args) {
+        String str = "cd";
+        printPermutations(str);
+        
+        str = "abb";
+        printPermutations(str);
+    }
+    
+    public static void printPermutations(String str) {
+        List<String> permutations = new ArrayList<>();
+        generatePermutations(str.toCharArray(), 0, permutations);
+        
+        System.out.println("Permutations of " + str + ":");
+        for (String perm : permutations) {
+            System.out.print(perm + " ");
+        }
+        System.out.println();
+    }
+    
+    private static void generatePermutations(char[] chars, int index, List<String> permutations) {
+        if (index == chars.length - 1) {
+            permutations.add(String.valueOf(chars));
+            return;
+        }
+        
+        for (int i = index; i < chars.length; i++) {
+            swap(chars, index, i);
+            generatePermutations(chars, index + 1, permutations);
+            swap(chars, index, i);
+        }
+    }
+    
+    private static void swap(char[] chars, int i, int j) {
+        char temp = chars[i];
+        chars[i] = chars[j];
+        chars[j] = temp;
+    }
+}
+<aside>
+💡 **8**
+
+Given a string, count total number of consonants in it. A consonant is an English alphabet character that is not vowel (a, e, i, o and u). Examples of constants are b, c, d, f, and g.
+
+**Examples :**
+ans-:
+Input : abc de
+Output : 3
+There are three consonants b, c and d.
+
+Input : geeksforgeeks portal
+Output : 12
+
+ans-:
+public class ConsonantCounter {
+    public static void main(String[] args) {
+        String str1 = "abc de";
+        int count1 = countConsonants(str1);
+        System.out.println("Number of consonants in '" + str1 + "': " + count1);
+        
+        String str2 = "geeksforgeeks portal";
+        int count2 = countConsonants(str2);
+        System.out.println("Number of consonants in '" + str2 + "': " + count2);
+    }
+    
+    public static int countConsonants(String str) {
+        int count = 0;
+        str = str.toLowerCase();
+        
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (isConsonant(ch)) {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+    
+    public static boolean isConsonant(char ch) {
+        return (ch >= 'a' && ch <= 'z') && !"aeiou".contains(Character.toString(ch));
+    }
+}
+
